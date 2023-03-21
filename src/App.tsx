@@ -3,18 +3,28 @@ import placeholderImage from './assets/react.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [showSearch, setShowSearch] = useState(false)
 
   return (
     <div className="App">
       <div className="header">
         <h1>Your feed</h1>
         <p>Enjoy the feed you enjoy</p>
+        <div>
+          { ( showSearch ) ?
+          <>
+            <input />
+            <button>Search</button>
+            <button onClick={ () => setShowSearch(!showSearch) }>X</button>
+          </>
+          : <button onClick={ () => setShowSearch(!showSearch) }>Nope</button> 
+          }
+          </div>
       </div>
 
       <div id="feed">
 
-        { ["2", "1", "3"].map((post, index) =>
+        { ["1", "2", "3"].map((post, index) =>
           <article>
             <img src={ placeholderImage } />
             <h2>Header</h2>
