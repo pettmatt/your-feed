@@ -1,15 +1,20 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import placeholderImage from './assets/react.svg'
 import './App.scss'
 
 function App() {
   const [showSearch, setShowSearch] = useState(false)
+  const [feedRow, setFeedRow] = useState(false)
+
+  const toggleFlexStyling = () => {
+    setFeedRow(!feedRow)
+  }
 
   return (
     <div className="App">
       <div className="header">
         <h1>Your feed</h1>
-        <p>Enjoy the feed you enjoy</p>
+        <p>Enjoy the feed, <b>your</b> way</p>
         <div>
           { ( showSearch ) ?
           <>
@@ -17,16 +22,22 @@ function App() {
             <button>Search</button>
             <button onClick={ () => setShowSearch(!showSearch) }>X</button>
           </>
-          : <button onClick={ () => setShowSearch(!showSearch) }>Nope</button> 
+          : <button onClick={ () => setShowSearch(!showSearch) }>Search</button> 
           }
-          </div>
+
+          <button onClick={ toggleFlexStyling }>
+            { feedRow ? "Column" : "Row" }
+          </button>
+        </div>
       </div>
 
-      <div id="feed" className="column-flex">
+      <div id="feed" className={ feedRow ? "row-flex" : "column-flex" }>
 
         { ["1", "2", "3"].map((post, index) =>
-          <article>
-            <img src={ placeholderImage } />
+          <article key={ index }>
+            <div className="image-container">
+              <img src={ placeholderImage } />
+            </div>
             <div className="details">
               <h2>Header</h2>
               <p>Little snippet</p>
