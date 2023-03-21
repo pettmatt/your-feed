@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import placeholderImage from './assets/react.svg'
-import './App.css'
+import './App.scss'
 
 function App() {
   const [showSearch, setShowSearch] = useState(false)
@@ -22,13 +22,15 @@ function App() {
           </div>
       </div>
 
-      <div id="feed">
+      <div id="feed" className="column-flex">
 
         { ["1", "2", "3"].map((post, index) =>
           <article>
             <img src={ placeholderImage } />
-            <h2>Header</h2>
-            <p>Little snippet</p>
+            <div className="details">
+              <h2>Header</h2>
+              <p>Little snippet</p>
+            </div>
           </article>
         ) }
 
