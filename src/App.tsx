@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import placeholderImage from './assets/react.svg'
 import './App.scss'
 
+import handleLocalStorage from './services/handleLocalStorage'
+
 function App() {
   const [showSearch, setShowSearch] = useState(false)
   const [feedRow, setFeedRow] = useState(false)
@@ -13,14 +15,19 @@ function App() {
 
   useEffect(() => {
     const date = new Date("2023-03-23").toISOString()
+    
+    if ( !articles ) {
+      handleLocalStorage.setLastSearchDate()
 
-    fetch(`http://localhost:3000/fetch/ign.com/${ date }`)
-      .then( response => response.json() )
-      .then( data => setArticles(data.articles) )
-      .catch( error => console.log(error) )
+      fetch(`http://localhost:3000/fetch/ign.com/${ date }`)
+        .then( response => response.json() )
+        .then( data => {
+          setArticles(data.articles)
+          handleLocalStorage.storageArticles(data.articles)
+        })
+        .catch( error => console.log(error) )
+    }
   }, [])
-
-  console.log("THIS ", articles)
 
   return (
     <div className="App">
