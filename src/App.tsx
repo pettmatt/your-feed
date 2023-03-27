@@ -7,26 +7,29 @@ import handleLocalStorage from './services/handleLocalStorage'
 function App() {
   const [showSearch, setShowSearch] = useState(false)
   const [feedRow, setFeedRow] = useState(false)
-  const [articles, setArticles] = useState([])
+  const [articles, setArticles] = useState<any[]>([])
+  const [filter, setFilter] = useState("")
 
   const toggleFlexStyling = () => {
     setFeedRow(!feedRow)
   }
 
   useEffect(() => {
-    const date = new Date("2023-03-23").toISOString()
-    
-    if ( !articles ) {
-      handleLocalStorage.setLastSearchDate()
+    const savedArticles = handleLocalStorage.getArticles()
+    setArticles(savedArticles)
 
-      fetch(`http://localhost:3000/fetch/ign.com/${ date }`)
-        .then( response => response.json() )
-        .then( data => {
-          setArticles(data.articles)
-          handleLocalStorage.storageArticles(data.articles)
-        })
-        .catch( error => console.log(error) )
-    }
+    // if ( articles.length === 0 ) {
+    //   const date = new Date("2023-03-23").toISOString()
+    //   handleLocalStorage.setLastSearchDate()
+
+    //   fetch(`http://localhost:3000/fetch/ign.com/${ date }`)
+    //     .then( response => response.json() )
+    //     .then( data => {
+    //       setArticles(data.articles)
+    //       handleLocalStorage.storageArticles(data.articles)
+    //     })
+    //     .catch( error => console.log(error) )
+    // }
   }, [])
 
   return (
@@ -37,8 +40,7 @@ function App() {
         <div>
           { ( showSearch ) ?
           <>
-            <input />
-            <button>Search</button>
+            <input value={ filter } onChange={ (e) => setFilter(e.target.value) } />
             <button onClick={ () => setShowSearch(!showSearch) }>X</button>
           </>
           : <button onClick={ () => setShowSearch(!showSearch) }>Search</button> 
@@ -55,25 +57,33 @@ function App() {
         { articles.map((post, index) => {
           const postedDate = new Date(post.published).toLocaleString()
 
-          return (
-            <article key={ index }>
-              <div className="image-container">
-                <img src={ post.img?.src || placeholderImage } alt={ post.img?.alt } />
-              </div>
-              <div className="details">
-                <div className="posted-details">
-                  <a href={ post.url }>
-                    { ( new URL(post.url).hostname ) }
-                  </a>
-                  <time dateTime={ post.published }>
-                    { postedDate.replaceAll("/", ".") }
-                  </time>
+          if (
+            post.header.toLowerCase().includes(filter.toLowerCase()) || 
+            post.paragraph.toLowerCase().includes(filter.toLowerCase())
+          ) {
+
+            return (
+              <article key={ index }>
+                <div className="image-container">
+                  <img src={ post.img?.src || placeholderImage } alt={ post.img?.alt }
+                    onClick={ () => console.log("Clicked") } />
                 </div>
-                <h2>{ post.header }</h2>
-                <p>{ post.paragraph }</p>
-              </div>
-            </article>
-          )
+                <div className="details">
+                  <div className="posted-details">
+                    <a href={ post.url }>
+                      { ( post.url ) ? new URL(post.url).hostname : "" }
+                    </a>
+                    <time dateTime={ post.published }>
+                      { postedDate.replaceAll("/", ".") }
+                    </time>
+                  </div>
+                  <h2>{ post.header }</h2>
+                  <p>{ post.paragraph }</p>
+                </div>
+              </article>
+            )
+
+          }
         }) }
 
       </div>
