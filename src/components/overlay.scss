@@ -1,0 +1,26 @@
+#overlay {
+    height: 100svh;
+    width: 50vw;
+    padding: 0 5rem;
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: #fff;
+    .overlay-container {
+        text-align: left;
+        width: 50%;
+        img {
+            width: 100%;
+            height: auto;
+        }
+        h2 {
+            font-size: 1.8rem;
+        }
+        h2, p {
+            margin: 0;
+        }
+        p {
+            margin-bottom: 1rem;
+        }
+    }
+}

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import placeholderImage from './assets/react.svg'
 import './App.scss'
 
+import Overlay from './components/Overlay'
 import handleLocalStorage from './services/handleLocalStorage'
 
 function App() {
@@ -9,9 +10,15 @@ function App() {
   const [feedRow, setFeedRow] = useState(false)
   const [articles, setArticles] = useState<any[]>([])
   const [filter, setFilter] = useState("")
+  const [overlay, setOverlay] = useState(false)
+
 
   const toggleFlexStyling = () => {
     setFeedRow(!feedRow)
+  }
+
+  const closeOverlay = () => {
+    setOverlay(false)
   }
 
   useEffect(() => {
@@ -66,7 +73,7 @@ function App() {
               <article key={ index }>
                 <div className="image-container">
                   <img src={ post.img?.src || placeholderImage } alt={ post.img?.alt }
-                    onClick={ () => console.log("Clicked") } />
+                    onClick={ () => setOverlay(true) } />
                 </div>
                 <div className="details">
                   <div className="posted-details">
@@ -87,6 +94,11 @@ function App() {
         }) }
 
       </div>
+
+      { overlay && 
+        <Overlay 
+          header="header" snippet="snipet" link="google.com" 
+          img={{ src: "#", alt: "Test" }} close={ closeOverlay } /> }
     </div>
   )
 }
