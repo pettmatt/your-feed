@@ -25,14 +25,13 @@ const joinAndMakeUniqueArray = (array1: any[], array2: any[]) => {
 }
 
 const makeUnique = (array: any[]) => {
-    let a = array
+    
+    const uniqueArray = array.filter((object, index) =>
+        array.findIndex((item) => 
+            item.header === object.header) === index
+    )
 
-    for (let i = 0; i < a.length; i++)
-        for (let j = i + 1; j < a.length; j++)
-            if (Object.is(a[i], a[j]))
-                a.splice(j--, 1)
-
-    return a
+    return uniqueArray
 }
 
 export default { storageArticles, getArticles, setLastSearchDate, getLastSearchDate }

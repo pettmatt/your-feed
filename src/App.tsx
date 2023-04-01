@@ -25,18 +25,18 @@ function App() {
     const savedArticles = handleLocalStorage.getArticles()
     setArticles(savedArticles)
 
-    // if ( articles.length === 0 ) {
-    //   const date = new Date("2023-03-23").toISOString()
-    //   handleLocalStorage.setLastSearchDate()
+    if ( articles.length === 0 ) {
+      const date = new Date("2023-03-23").toISOString()
+      handleLocalStorage.setLastSearchDate()
 
-    //   fetch(`http://localhost:3000/fetch/ign.com/${ date }`)
-    //     .then( response => response.json() )
-    //     .then( data => {
-    //       setArticles(data.articles)
-    //       handleLocalStorage.storageArticles(data.articles)
-    //     })
-    //     .catch( error => console.log(error) )
-    // }
+      fetch(`http://localhost:3000/fetch/ign.com/${ date }`)
+        .then( response => response.json() )
+        .then( data => {
+          setArticles(data.articles)
+          handleLocalStorage.storageArticles(data.articles)
+        })
+        .catch( error => console.log(error) )
+    }
   }, [])
 
   return (
