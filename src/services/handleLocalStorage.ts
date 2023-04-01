@@ -25,7 +25,6 @@ const joinAndMakeUniqueArray = (array1: any[], array2: any[]) => {
 }
 
 const makeUnique = (array: any[]) => {
-    
     const uniqueArray = array.filter((object, index) =>
         array.findIndex((item) => 
             item.header === object.header) === index

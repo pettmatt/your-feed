@@ -11,7 +11,7 @@ function App() {
   const [articles, setArticles] = useState<any[]>([])
   const [filter, setFilter] = useState("")
   const [overlay, setOverlay] = useState(false)
-
+  const [overlaySelect, setOverlaySelect] = useState({})
 
   const toggleFlexStyling = () => {
     setFeedRow(!feedRow)
@@ -19,6 +19,14 @@ function App() {
 
   const closeOverlay = () => {
     setOverlay(false)
+    setOverlaySelect({})
+  }
+
+  const showOverlay = (post: Object) => {
+    setOverlay(true)
+    setOverlaySelect({
+      header: post.header
+    })
   }
 
   useEffect(() => {
@@ -73,7 +81,7 @@ function App() {
               <article key={ index }>
                 <div className="image-container">
                   <img src={ post.img?.src || placeholderImage } alt={ post.img?.alt }
-                    onClick={ () => setOverlay(true) } />
+                    onClick={ () => showOverlay(post) } />
                 </div>
                 <div className="details">
                   <div className="posted-details">
@@ -96,8 +104,8 @@ function App() {
       </div>
 
       { overlay && 
-        <Overlay 
-          header="header" snippet="snipet" link="google.com" 
+        <Overlay
+          header={ overlaySelect.header } snippet="snipet" link="" 
           img={{ src: "#", alt: "Test" }} close={ closeOverlay } /> }
     </div>
   )
